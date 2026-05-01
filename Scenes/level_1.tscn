@@ -23,6 +23,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAASAAAAAAD//wAAAAASAAAAAAABAAAAAAATAAA
 tile_set = ExtResource("2_7p6j4")
 
 [node name="Player" parent="." instance=ExtResource("3_6444e")]
+position = Vector2(70, -36)
 script = ExtResource("4_evi0p")
 
 [node name="Enemy" type="Area2D" parent="."]
