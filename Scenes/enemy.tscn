@@ -1,0 +1,93 @@
+[gd_scene load_steps=9 format=3 uid="uid://dakddajhjigl1"]
+
+[ext_resource type="Texture2D" uid="uid://wxtyg1immgjw" path="res://Sprites/Characters/character_0026.png" id="2_0830c"]
+[ext_resource type="Texture2D" uid="uid://c3ihnj71728n1" path="res://Sprites/Characters/character_0024.png" id="3_ghaa6"]
+[ext_resource type="Texture2D" uid="uid://dw58r7fhdqrtx" path="res://Sprites/Characters/character_0025.png" id="4_1dp5w"]
+
+[sub_resource type="GDScript" id="GDScript_afpow"]
+script/source = "extends Area2D
+
+@export var move_direction : Vector2
+@export var move_speed : float = 20
+
+@onready var start_pos : Vector2 = global_position
+@onready var target_pos : Vector2 = global_position + move_direction
+
+func _ready():
+	$AnimationPlayer.play(\"fly\")
+
+func _physics_process(delta):
+	global_position = global_position.move_toward(target_pos, move_speed * delta)
+	
+	if global_position == target_pos:
+		if target_pos == start_pos:
+			target_pos = start_pos + move_direction
+		else:
+			target_pos = start_pos
+
+func _on_body_entered(body):
+	if not body.is_in_group(\"Player\"):
+		return
+	
+	body.take_damage(1)
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6444e"]
+radius = 7.0
+
+[sub_resource type="Animation" id="Animation_wrinw"]
+resource_name = "fly"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.26666668),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("3_ghaa6"), ExtResource("4_1dp5w"), ExtResource("2_0830c")]
+}
+
+[sub_resource type="Animation" id="Animation_chwpn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_ghaa6")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_af3po"]
+_data = {
+&"RESET": SubResource("Animation_chwpn"),
+&"fly": SubResource("Animation_wrinw")
+}
+
+[node name="Enemy" type="Area2D"]
+script = SubResource("GDScript_afpow")
+move_direction = Vector2(0, -50)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(59, -24)
+texture = ExtResource("3_ghaa6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(59, -24)
+shape = SubResource("CircleShape2D_6444e")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_af3po")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

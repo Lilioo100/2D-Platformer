@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=4 uid="uid://byhkuuhb0rtwl"]
+
+[ext_resource type="Texture2D" uid="uid://bify2pn5g6sgc" path="res://Sprites/Backgrounds/backgroundForest.png" id="1_xfk5q"]
+[ext_resource type="TileSet" uid="uid://cwikw6enojdid" path="res://Sprites/Tiles/new_tile_set.tres" id="2_7p6j4"]
+[ext_resource type="PackedScene" uid="uid://2jabg3n6l764" path="res://Scenes/player.tscn" id="3_6444e"]
+[ext_resource type="Texture2D" uid="uid://c3ihnj71728n1" path="res://Sprites/Characters/character_0024.png" id="4_7p6j4"]
+[ext_resource type="Script" uid="uid://cdgp1xvs2q54n" path="res://Scenes/enemy.gd" id="4_6444e"]
+[ext_resource type="Script" uid="uid://bevjfkqhe8r6d" path="res://Scenes/player.gd" id="4_evi0p"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6444e"]
+radius = 7.0
+
+[node name="Main" type="Node2D"]
+script = ExtResource("4_evi0p")
+
+[node name="BackgroundSprite" type="Sprite2D" parent="." groups=["Player"]]
+position = Vector2(382, -88)
+texture = ExtResource("1_xfk5q")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+position = Vector2(1, 0)
+tile_map_data = PackedByteArray("AAAAAAAAAAASAAAAAAD//wAAAAASAAAAAAABAAAAAAATAAAAAAABAAEAAAATAAIAAAAAAAEAAAASAAIAAAD//wEAAAASAAIAAAD+/wEAAAARAAIAAAAEAAEAAAANAAUAAAAEAAAAAAANAAQAAAAFAAAAAAANAAYAAAAGAAAAAAANAAYAAAAHAAAAAAAOAAQAAAAHAAEAAAAOAAUAAAAGAAEAAAANAAYAAAAFAAEAAAANAAYAAAAKAAEAAAAPAAQAAAAKAAIAAAAPAAUAAAAKAAMAAAAPAAYAAAAOAAIAAAARAAAAAAAOAAMAAAARAAEAAAAOAAQAAAARAAIAAAAWAAIAAAALAAAAAAAaAAMAAAAQAAIAAAAaAAQAAAAQAAMAAAD+////AAARAAYAAAD+//7/AAAQAAYAAAD+//3/AAALAAAAAAD+//z/AAANAAMAAAD///z/AAALAAAAAAD///v/AAAOAAQAAAD9//v/AAANAAQAAAD+//v/AAALAAAAAAD9//z/AAALAAAAAAD9//3/AAANAAUAAAD///3/AAAOAAUAAAD9//7/AAASAAQAAAABAP//AAAHAAYAAAAPAAIAAAASAAAAAAAPAAQAAAASAAIAAAAPAAMAAAASAAEAAAAQAAIAAAATAAEAAAAQAAEAAAAQAAEAAAAQAAMAAAATAAEAAAAQAAQAAAATAAIAAAAUAAIAAAALAAAAAAAVAAIAAAAKAAAAAAAeAAAAAAANAAYAAAAdAAAAAAAMAAYAAAAoAP//AAARAAMAAAApAP//AAASAAMAAAAfAP//AAAHAAEAAAAfAAAAAAANAAYAAAAiAAIAAAANAAQAAAAiAAQAAAALAAAAAAAjAAMAAAAOAAUAAAAjAAIAAAAOAAQAAAAiAAMAAAANAAUAAAAjAAQAAAALAAAAAAAlAAEAAAARAAMAAAAmAAEAAAATAAMAAAAqAP//AAATAAMAAAApAP7/AAAGAAYAAAAtAP//AAARAAIAAAAuAP//AAASAAIAAAAvAP//AAASAAIAAAAtAP7/AAARAAAAAAAvAP7/AAASAAAAAAAwAP7/AAATAAAAAAAwAP//AAATAAIAAAAuAP7/AAASAAAAAAAwAP3/AAAIAAQAAAAuAP3/AAAIAAYAAAAmAAAAAAAIAAcAAAD+/wAAAAARAAAAAAAaAAEAAAAQAAEAAAAaAAIAAAAQAAIAAAA=")
+tile_set = ExtResource("2_7p6j4")
+
+[node name="Player" parent="." instance=ExtResource("3_6444e")]
+script = ExtResource("4_evi0p")
+
+[node name="Enemy" type="Area2D" parent="."]
+position = Vector2(56, 12)
+script = ExtResource("4_6444e")
+move_diraction = Vector2(0, -50)
+
+[node name="Sprite" type="Sprite2D" parent="Enemy"]
+texture = ExtResource("4_7p6j4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+shape = SubResource("CircleShape2D_6444e")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy"]
